@@ -478,6 +478,9 @@
           
 
   
+    <div id="gitalk-container"></div>
+
+  
 
 
 
@@ -812,6 +815,24 @@
 
 
 
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'b7997ab6bc7713b9ad2d',
+          clientSecret: '65a27e9ffc62b040db9f7de73b0e718d6a428e86',
+          repo: 'hackxhao.github.io',
+          owner: '1083150390@qq.com',
+          admin: ['1083150390@qq.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')
+       </script>
 
 
 
