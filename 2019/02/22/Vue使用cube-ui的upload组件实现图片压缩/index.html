@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue.js,cube-ui,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介cube-ui是滴滴的一款基于Vue.js 实现的精致移动端组件库  官方文档地址：https://didi.github.io/cube-ui/#/zh-CN  快速使用我们在使用cube-ui之前首先需要npm进行安装1npm install cube-ui --save 注意：此安装部分只针对于 vue-cli &amp;lt; 3 的情况 安装完成之后需要在main.js里面import一下">
+<meta name="keywords" content="vue.js,cube-ui">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue使用cube-ui的upload组件实现图片压缩">
+<meta property="og:url" content="http://webug.io/2019/02/22/Vue使用cube-ui的upload组件实现图片压缩/index.html">
+<meta property="og:site_name" content="Ahao&#39;s Blog">
+<meta property="og:description" content="简介cube-ui是滴滴的一款基于Vue.js 实现的精致移动端组件库  官方文档地址：https://didi.github.io/cube-ui/#/zh-CN  快速使用我们在使用cube-ui之前首先需要npm进行安装1npm install cube-ui --save 注意：此安装部分只针对于 vue-cli &amp;lt; 3 的情况 安装完成之后需要在main.js里面import一下">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-22T02:18:25.092Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue使用cube-ui的upload组件实现图片压缩">
+<meta name="twitter:description" content="简介cube-ui是滴滴的一款基于Vue.js 实现的精致移动端组件库  官方文档地址：https://didi.github.io/cube-ui/#/zh-CN  快速使用我们在使用cube-ui之前首先需要npm进行安装1npm install cube-ui --save 注意：此安装部分只针对于 vue-cli &amp;lt; 3 的情况 安装完成之后需要在main.js里面import一下">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://webug.io/2019/02/22/Vue使用cube-ui的upload组件实现图片压缩/">
+
+
+
+
+
+  <title>Vue使用cube-ui的upload组件实现图片压缩 | Ahao's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ahao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">因为热爱，所以不曾停止追求</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://webug.io/2019/02/22/Vue使用cube-ui的upload组件实现图片压缩/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ahao's Blog">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://webug.oss-cn-beijing.aliyuncs.com/imgBed/20190125062200007.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ahao's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue使用cube-ui的upload组件实现图片压缩</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-22T10:17:20+08:00">
+                2019-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>cube-ui是滴滴的一款基于Vue.js 实现的精致移动端组件库</p>
+<blockquote>
+<p>官方文档地址：<a href="https://didi.github.io/cube-ui/#/zh-CN" target="_blank" rel="noopener">https://didi.github.io/cube-ui/#/zh-CN</a></p>
+</blockquote>
+<h3 id="快速使用"><a href="#快速使用" class="headerlink" title="快速使用"></a>快速使用</h3><p>我们在使用cube-ui之前首先需要npm进行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install cube-ui --save</span><br></pre></td></tr></table></figure></p>
+<p>注意：此安装部分只针对于 vue-cli &lt; 3 的情况</p>
+<p>安装完成之后需要在main.js里面import一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import Cube from &apos;cube-ui&apos;</span><br><span class="line">Vue.use(Cube);</span><br></pre></td></tr></table></figure>
+<p>接下来在页面中就可以调用cube-ui的组件了！！！</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;cube-upload</span><br><span class="line">    ref=&quot;upload&quot;</span><br><span class="line">    :simultaneous-uploads=&quot;1&quot;</span><br><span class="line">    :max = &quot;5&quot;</span><br><span class="line">    :auto=&quot;false&quot;</span><br><span class="line">    @files-added=&quot;filesAdded&quot;</span><br><span class="line">    @file-removed = &quot;filesRemoved&quot;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>simultaneous-uploads 上传并发数</li>
+<li>max 最多可选择多少张</li>
+<li>auto 是否自动上传</li>
+<li>files-added 选择完图片回调方法</li>
+<li>file-removed 删除图片回调方法</li>
+</ul>
+<p>更多方法参数可见：<a href="https://didi.github.io/cube-ui/#/zh-CN/docs/upload" target="_blank" rel="noopener">https://didi.github.io/cube-ui/#/zh-CN/docs/upload</a></p>
+<h5 id="具体方法实现"><a href="#具体方法实现" class="headerlink" title="具体方法实现"></a>具体方法实现</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">data()&#123;</span><br><span class="line">    return&#123;</span><br><span class="line">        imgList:[]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 这里的files是一个文件的数组</span><br><span class="line">filesAdded(files) &#123;</span><br><span class="line">    let hasIgnore = false;</span><br><span class="line">    const limitSize = 1 * 1024;</span><br><span class="line">    // 最大5M</span><br><span class="line">    const maxSize = 5 * 1024 * 1024;</span><br><span class="line">    for (let i = 0; i&lt; files.length; i++) &#123;</span><br><span class="line">      const file = files[i];</span><br><span class="line">      // 如果选择的图片大小最大限制（这里为5M）则弹出提示</span><br><span class="line">      if(file.size &gt; maxSize)&#123;</span><br><span class="line">        file.ignore = true;</span><br><span class="line">        hasIgnore = true;</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">      // 如果选择的图片大小大于1M则进行图片压缩处理（Base64）</span><br><span class="line">      if(file.size &gt; limitSize)&#123;</span><br><span class="line">        this.compressPic(file);</span><br><span class="line">      &#125;else&#123;</span><br><span class="line">        let reads= new FileReader();</span><br><span class="line">        reads.readAsDataURL(file);</span><br><span class="line">        let that = this;</span><br><span class="line">        reads.onload = function(e) &#123;</span><br><span class="line">          var bdata = this.result;</span><br><span class="line">          that.imgList.push(bdata)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    hasIgnore &amp;&amp; this.$createToast(&#123;</span><br><span class="line">      type: &apos;warn&apos;,</span><br><span class="line">      time: 1000,</span><br><span class="line">      txt: &apos;图片最大支持5M&apos;</span><br><span class="line">    &#125;).show()</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">// 图片压缩方法</span><br><span class="line">compressPic(file)&#123;</span><br><span class="line">    let reads= new FileReader();</span><br><span class="line">    reads.readAsDataURL(file)</span><br><span class="line">    // 注意这里this作用域的问题</span><br><span class="line">    let that = this;</span><br><span class="line">    reads.onload = function(e) &#123;</span><br><span class="line">      var bdata = this.result;</span><br><span class="line">      // 这里quality的范围是（0-1）</span><br><span class="line">      var quality = 0.1;</span><br><span class="line">      var canvas = document.createElement(&quot;canvas&quot;);</span><br><span class="line">      var ctx = canvas.getContext(&quot;2d&quot;);</span><br><span class="line">      var img = new Image();</span><br><span class="line">      img.src = bdata;</span><br><span class="line">      img.onload =function() &#123;</span><br><span class="line">        var width = img.width;</span><br><span class="line">        canvas.width = width;</span><br><span class="line">        canvas.height = width * (img.height / img.width);</span><br><span class="line">        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);</span><br><span class="line">        let data = canvas.toDataURL(&quot;image/jpeg&quot;,quality);</span><br><span class="line">        that.imgList.push(data)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>压缩完成之后放入imgList数组中…</p>
+<p>捋一下大概的逻辑，其实非常简单：</p>
+<ol>
+<li>前台选择完成图片会进入filesAdded方法回调中</li>
+<li>在filesAdded主要做了两个判断：一是选择图片的大小不得超过5M，二则是如果选择的图片大于1M则进行压缩，否则不进行。</li>
+<li>将压缩过的base64代码放入imgList数组中去</li>
+</ol>
+<p>这个时候我们的数据已经拿到了，接下来要做的就是上传到后台去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">submit()&#123;</span><br><span class="line">    const sendData = &#123;</span><br><span class="line">        imgList : this.imgList</span><br><span class="line">    &#125;</span><br><span class="line">    this.remotePost(&apos;/upload&apos;, sendData, (rsp)=&gt; &#123;</span><br><span class="line">         // 上传成功后的业务逻辑</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>后台代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/upload&quot;, method=RequestMethod.POST)</span><br><span class="line">@ResponseBody</span><br><span class="line">public RspEntity imgUpload(HttpSession session, @RequestBody Map&lt;String, Object&gt; reqData) throws Exception &#123;</span><br><span class="line">    // 图片列表</span><br><span class="line">    List&lt;String&gt; imgList = (List&lt;String&gt;)reqData.get(&quot;imgList&quot;);</span><br><span class="line"></span><br><span class="line">    // 通过for循环取出list中的base64代码</span><br><span class="line">    for(String imgBase64 : imgList)&#123;</span><br><span class="line">        // 可通过base64转file/byte[]等根据业务自行实现</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>另外一种方式通过后台进行压缩<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">data()&#123;</span><br><span class="line">    return&#123;</span><br><span class="line">        fileList: new FormData()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filesAdded(files) &#123;</span><br><span class="line">    for (let k in files) &#123;</span><br><span class="line">      const file = files[k];</span><br><span class="line">      this.existFile = file;</span><br><span class="line">      this.fileList.append(&apos;files&apos;,file);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">submit()&#123;</span><br><span class="line">    this.remotePost(&apos;/upload&apos;, this.fileList, (rsp)=&gt; &#123;</span><br><span class="line">         // 上传成功后的业务逻辑</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样搞就是传参就是file类型的…</p>
+<p>后台代码则需要进行以下改造…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/upload&quot;, method=RequestMethod.POST)</span><br><span class="line">@ResponseBody</span><br><span class="line">public RspEntity imgUpload(HttpSession session, @RequestParam(value=&quot;files&quot;) MultipartFile[] files) throws Exception &#123;</span><br><span class="line">	for (int i = 0; i &lt; files.length; i++) &#123;</span><br><span class="line">		MultipartFile file = files[i];</span><br><span class="line">		String fileType = file.getContentType();</span><br><span class="line">		if(StringUtils.isEmpty(fileType) || !fileType.matches(&quot;image.*&quot;))&#123;</span><br><span class="line">			logger.error(&quot;上传图片类型错误:&quot; + fileType);</span><br><span class="line">			rspEntity.setRspMsg(&quot;上传图片类型错误&quot;);</span><br><span class="line">			rspEntity.setRspCode(AppConstants.MSG_STATUS_FAIL);</span><br><span class="line">			return rspEntity;</span><br><span class="line">		&#125;</span><br><span class="line">		if(file.getSize() &gt; (long)(5 * 1024 * 1024))&#123;</span><br><span class="line">			logger.error(&quot;上传图片大小超过限制:&quot; + file.getSize());</span><br><span class="line">			rspEntity.setRspMsg(&quot;上传图片大小超过限制&quot;);</span><br><span class="line">			rspEntity.setRspCode(AppConstants.MSG_STATUS_FAIL);</span><br><span class="line">			return rspEntity;</span><br><span class="line">		&#125;</span><br><span class="line">		String fileName = file.getOriginalFilename();</span><br><span class="line">		String temp[] = fileName.split(&quot;\\.&quot;);</span><br><span class="line">		if (temp.length &lt; 2 || !temp[temp.length - 1].matches(&quot;(jpg|jpeg|png|JPG|JPEG|PNG)&quot;)) &#123;</span><br><span class="line">			logger.error(&quot;上传图片文件名错误:&quot; + fileName);</span><br><span class="line">			rspEntity.setRspMsg(&quot;上传图片文件名错误&quot;);</span><br><span class="line">			rspEntity.setRspCode(AppConstants.MSG_STATUS_FAIL);</span><br><span class="line">			return rspEntity;</span><br><span class="line">		&#125;</span><br><span class="line">		byte[] imgCompress = CommUtil6442.compressPicForScale(file.getBytes(), 300, file.getOriginalFilename());</span><br><span class="line">		// 具体根据业务实现</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是通过谷歌的一个图片压缩工具compressPicForScale，具体方法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">	 * 根据指定大小压缩图片</span><br><span class="line">	 *</span><br><span class="line">	 * @param imageBytes</span><br><span class="line">	 *            源图片字节数组</span><br><span class="line">	 * @param desFileSize</span><br><span class="line">	 *            指定图片大小，单位kb</span><br><span class="line">	 * @param imageId</span><br><span class="line">	 *            影像编号</span><br><span class="line">	 * @return 压缩质量后的图片字节数组</span><br><span class="line">	 */</span><br><span class="line">	public static byte[] compressPicForScale(byte[] imageBytes, long desFileSize, String imageId) &#123;</span><br><span class="line">		if (imageBytes == null || imageBytes.length &lt;= 0 || imageBytes.length &lt; desFileSize * 1024) &#123;</span><br><span class="line">			return imageBytes;</span><br><span class="line">		&#125;</span><br><span class="line">		long srcSize = imageBytes.length;</span><br><span class="line">		double accuracy = getAccuracy(srcSize / 1024);</span><br><span class="line">		try &#123;</span><br><span class="line">			while (imageBytes.length &gt; desFileSize * 1024) &#123;</span><br><span class="line">				ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);</span><br><span class="line">				ByteArrayOutputStream outputStream = new ByteArrayOutputStream(imageBytes.length);</span><br><span class="line">				Thumbnails.of(inputStream).scale(accuracy).outputQuality(accuracy).toOutputStream(outputStream);</span><br><span class="line">				imageBytes = outputStream.toByteArray();</span><br><span class="line">			&#125;</span><br><span class="line">			logger.info(&quot;【图片压缩】imageId=&#123;&#125; | 图片原大小=&#123;&#125;kb | 压缩后大小=&#123;&#125;kb&quot;, imageId, srcSize / 1024,</span><br><span class="line">					imageBytes.length / 1024);</span><br><span class="line">		&#125; catch (Exception e) &#123;</span><br><span class="line">			logger.error(&quot;【图片压缩】msg=图片压缩失败!&quot;, e);</span><br><span class="line">		&#125;</span><br><span class="line">		return imageBytes;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 自动调节精度(经验数值)</span><br><span class="line">	 *</span><br><span class="line">	 * @param size</span><br><span class="line">	 *            源图片大小</span><br><span class="line">	 * @return 图片压缩质量比</span><br><span class="line">	 */</span><br><span class="line">	private static double getAccuracy(long size) &#123;</span><br><span class="line">		double accuracy;</span><br><span class="line">		if (size &lt; 900) &#123;</span><br><span class="line">			accuracy = 0.85;</span><br><span class="line">		&#125; else if (size &lt; 2047) &#123;</span><br><span class="line">			accuracy = 0.6;</span><br><span class="line">		&#125; else if (size &lt; 3275) &#123;</span><br><span class="line">			accuracy = 0.44;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			accuracy = 0.4;</span><br><span class="line">		&#125;</span><br><span class="line">		return accuracy;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用之前需要在pom.xm里面引入，如果不是maven项目则需要去网上搜索下载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;net.coobird&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;thumbnailator&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;0.4.8&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h3><p>我们在使用上传插件的时候，如果不是自动上传，则需要将action删除掉，不能将其设置为：action=”#”，否则会请求两次。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue-js/" rel="tag"># vue.js</a>
+          
+            <a href="/tags/cube-ui/" rel="tag"># cube-ui</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/31/关于docker-Compose基本使用/" rel="next" title="关于docker-compose基本使用">
+                <i class="fa fa-chevron-left"></i> 关于docker-compose基本使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://webug.oss-cn-beijing.aliyuncs.com/imgBed/20190125062200007.png" alt="Ahao's Blog">
+            
+              <p class="site-author-name" itemprop="name">Ahao's Blog</p>
+              <p class="site-description motion-element" itemprop="description">分享文章，学习心得，以及自己的日常...</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hackxhao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:arryhao@126.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                作品集
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://39.106.117.123:8080/imgBed/upload" title="webug在线图床" target="_blank">webug在线图床</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速使用"><span class="nav-number">2.</span> <span class="nav-text">快速使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例"><span class="nav-number">2.1.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#具体方法实现"><span class="nav-number">2.1.1.</span> <span class="nav-text">具体方法实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遇到的坑"><span class="nav-number">3.</span> <span class="nav-text">遇到的坑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ahao's Blog</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'b7997ab6bc7713b9ad2d',
+          clientSecret: '65a27e9ffc62b040db9f7de73b0e718d6a428e86',
+          repo: 'hackxhao.github.io',
+          owner: 'hackxhao',
+          admin: ['hackxhao'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')
+       </script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
